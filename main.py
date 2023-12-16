@@ -1,78 +1,48 @@
 import pygame
-# from tile import Tile, TileState
-import time
-import board
-from textures import Textures
-from enum import Enum
-# import display_functions
-# from menu_button import MenuButton
 
-#Configuration
 pygame.init()
 
-#flag
-running = True
+#window config
+SIZESCREEN = WIDTH, HEIGHT = 600, 550
+screen = pygame.display.set_mode(SIZESCREEN)
+pygame.display.set_caption("TicTacToe")
 
-fps = 60
-fpsClock = pygame.time.Clock()
+
+#framerate
+FPS = 60
+clock = pygame.time.Clock()
+
+
+bg_image = pygame.image.load("./images/background_wood.png").convert_alpha()
+icon = pygame.image.load("./images/bamboo_X.png").convert_alpha()
+
+
+#icon config
+pygame.display.set_icon(icon)
 
 #font config
 font = pygame.font.SysFont("Courier New", 40)
 
-#window config
-window_width = 450
-window_height = 500
-screen = pygame.display.set_mode((window_width, window_height))
 
-#title window
-pygame.display.set_caption("TicTacToe")
+#main game loop
+run = True
+while run:
 
+    clock.tick(FPS)
 
-#size of tile (kwadratu albo dosłownie płytki XD)
-#TODO thinking what does it
-tile_size = 100
+    #draw background
+    scaled_bg = pygame.transform.scale(bg_image, SIZESCREEN)
+    screen.blit(scaled_bg, (0, 0))
 
-game_state = 1 #stan ekranu gry
-
-#image config
-stick_height = tile_size * 1
-stick_width = tile_size * 1 / 3
-tile_margin = 50
-
-textures = Textures(pygame, './Textures/bamboo_card.jpg', './Textures/bamboo_stick.png',
-                    './Textures/bamboo_x.png', './Textures/bamboo_circle.png',
-                    window_width, window_height, tile_size, tile_margin, stick_width, stick_height)
-
-#icon config
-pygame.display.set_icon(textures.o_image)
-
-# top margin XD do przyciskow
-#TODO other resolve this
-top_margin = 30
-
-# set 1 message testing
-# message = font.render("Hello World!!", True, ("blue"))
-# screen.blit(message,(0,0))
-
-gameboard = []
-
-
-
-
-
-
-
-
-
-
-
-
-#The end
-pygame.display.update()
-fpsClock.tick(fps)
-
-while running:
+    #event handler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            run = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                run = False
+
+
+    pygame.display.update()
+
 pygame.quit()

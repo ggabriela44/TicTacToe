@@ -13,17 +13,29 @@ class TicTacToe:
         self.board = Board()
 
     def run_game(self):
+        global DRAW
         while self.running:
             self.board.draw_board()
             self.board.draw_net()
+            self.board.draw_cells()
             pygame.display.update()
             for event in pygame.event.get():
-
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
+                if event.type == pygame.locals.MOUSEBUTTONDOWN:
+                    if TURN == 1: #player
+                        x, y = pygame.mouse.get_pos()
+                        self.board.player_pos(x, y)
+                        # for testing
+                        # if DRAW == 0:
+                        #     DRAW = 1
+                        # else:
+                        #     DRAW = 0
+
+
             self.clock.tick(FPS)
         pygame.quit()
         sys.exit()

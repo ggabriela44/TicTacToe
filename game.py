@@ -29,11 +29,11 @@ class TicTacToe:
                     if TURN == 1: #player
                         x, y = pygame.mouse.get_pos()
                         self.board.player_pos(x, y)
-                        # for testing
-                        # if DRAW == 0:
-                        #     DRAW = 1
-                        # else:
-                        #     DRAW = 0
+                        # # # for testing
+                        # if self.board.draw_XO == 0:
+                        #     self.board.draw_XO = 1
+                        # elif self.board.draw_XO == 1:
+                        #     self.board.draw_XO = 0
 
 
             self.clock.tick(FPS)

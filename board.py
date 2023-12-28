@@ -4,6 +4,7 @@ from settings import *
 
 class Board:
     def __init__(self):
+        self.image_draw = None
         self.screen = pygame.display.set_mode(SIZESCREEN)
         pygame.display.set_caption("Kółko Krzyżyk")
 
@@ -28,8 +29,8 @@ class Board:
         self.screen.blit(self.scaled_bg, (0, 0))
 
         # draw 0 - 0, 1 - X
-        self.draw_XO = 0
-
+        draw_XO = 0
+        # self.image_draw = ""
         #initialization icon
         pygame.display.set_icon(self.icon)
 
@@ -73,40 +74,33 @@ class Board:
                 cell_x = (col) * CELL_WIDTH + CELL_WIDTH/2
                 cell_y = (row) * CELL_HEIGHT + CELL_HEIGHT/2
 
-                #rysowanie X lub O pomocnicznie - do usunięcia
-                # self.draw_pointer(self.screen, field, (cell_x, cell_y))
+                #drawing X or O on the field
+                self.draw_pointer(self.screen, field, cell_x, cell_y)
 
-                #draw "0" or "X"
-                self.draw_player(cell_x, cell_y, self.draw_XO)
 
     #position where player click on the board
-    def player_pos(self, pos_x, pos_y):
-
+    def player_pos(self, pos_x, pos_y, MOVE):
         if pos_x >= MARGIN_WIDTH and pos_x <= WIDTH-MARGIN_WIDTH and pos_y >= MARGIN_HEIGHT and pos_y <= HEIGHT-MARGIN_HEIGHT:
             pos_x = (pos_x - MARGIN_WIDTH ) // CELL_WIDTH
             pos_y = (pos_y - MARGIN_HEIGHT) // CELL_HEIGHT
-            self.field[int(pos_x) + int(pos_y) * 3] = player_draw(self.draw_XO)
-            # if self.draw_XO == 0:
-            #     self.draw_XO = 1
-            # elif self.draw_XO == 1:
-            #     self.draw_XO = 0
 
-    #funkcja pomocniczna - do usunięcia
-    def draw_pointer(self, screen,  text, center, color=(180, 180, 180)):
-        text = self.font.render(text, True, color)
-        rect = text.get_rect()
-        rect.center = center
-        screen.blit(text, rect)
-
-    #drawing image on the net
-    def draw_player(self, x, y, flag):
-        if flag == 0:
-            image_draw = self.draw_0
-        else:
-            image_draw = self.draw_X
-        self.screen.blit(image_draw, [x-15, y+35])
+            # fill the list
+            if not self.field[int(pos_x) + int(pos_y) * 3]:
+                if MOVE == 1:
+                    self.field[int(pos_x) + int(pos_y) * 3] = "O"
+                    return 2
+                elif MOVE == 2:
+                    self.field[int(pos_x) + int(pos_y) * 3] = "X"
+                    return 1
+            return MOVE
 
 
-#filing the FIELD_GAME as self.field with "1" or "0"
-def player_draw(flag):
-    return "1" if flag else "0"
+    # drawing image on the net
+    def draw_pointer(self, screen,  text,x, y):
+        if text == "O":
+            self.image_draw = self.draw_0
+        elif text == "X":
+            self.image_draw = self.draw_X
+        screen.blit(self.image_draw, [x - 15, y + 35])
+
+

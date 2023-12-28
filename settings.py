@@ -5,7 +5,7 @@ import pygame.locals
 SIZESCREEN = WIDTH, HEIGHT = 600, 650
 
 #framerate
-FPS = 60
+FPS = 15
 
 # przesunięcie
 MARGIN_WIDTH = 50
@@ -17,10 +17,10 @@ CELL_HEIGHT = (HEIGHT - MARGIN_HEIGHT *2) // 3
 
 #in the beggining player start
 # 0 - set?, 1 - player, 2 - ai
-TURN = 1
 
-# #draw 0 - 0, 1 - X
-# DRAW = 0
+
+#MOVE 1 - player (default), 2 - computer,
+MOVE = 1
 
 #not defined functions
 

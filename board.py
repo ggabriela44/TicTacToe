@@ -20,17 +20,14 @@ class Board:
         self.stickh1 = pygame.transform.scale(self.stickh1, (500, 30))
         self.stickh2 = pygame.transform.scale(self.stickh2, (500, 30))
 
-        self.draw_0 =  pygame.image.load("images/bamboo_O.png").convert_alpha()
-        self.draw_X =  pygame.image.load("images/bamboo_X.png").convert_alpha()
+        self.draw_0 = pygame.image.load("images/bamboo_O.png").convert_alpha()
+        self.draw_X = pygame.image.load("images/bamboo_X.png").convert_alpha()
         self.draw_0 = pygame.transform.scale(self.draw_0, (CELL_WIDTH/1.2, CELL_HEIGHT/1.2 ))
         self.draw_X = pygame.transform.scale(self.draw_X, (CELL_WIDTH/1.2, CELL_HEIGHT/1.2))
 
-        self.scaled_bg = pygame.transform.scale(self.bg_image, SIZESCREEN)
-        self.screen.blit(self.scaled_bg, (0, 0))
+        # self.scaled_bg = pygame.transform.scale(self.bg_image, SIZESCREEN)
+        # self.screen.blit(self.scaled_bg, (0, 0))
 
-        # draw 0 - 0, 1 - X
-        draw_XO = 0
-        # self.image_draw = ""
         #initialization icon
         pygame.display.set_icon(self.icon)
 
@@ -103,4 +100,13 @@ class Board:
             self.image_draw = self.draw_X
         screen.blit(self.image_draw, [x - 15, y + 35])
 
+    def draw_lyrics(self, turn):
+        if turn == 1:
+            text = "Ruch: Gracz 1"
+        elif turn == 2:
+            text = "Ruch: Gracz 2"
+        text = self.font.render(text, True, (180, 180, 180))
+        position = text.get_rect()
+        position.center = (WIDTH/2, MARGIN_HEIGHT/2)
+        self.screen.blit(text, position)
 

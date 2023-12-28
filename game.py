@@ -33,6 +33,7 @@ class TicTacToe:
             self.board.draw_board()
             self.board.draw_net()
             self.board.draw_cells()
+            self.board.draw_lyrics(self.move)
             pygame.display.update()
 
             self.clock.tick(FPS)

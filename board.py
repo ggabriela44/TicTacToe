@@ -25,9 +25,6 @@ class Board:
         self.draw_0 = pygame.transform.scale(self.draw_0, (CELL_WIDTH/1.2, CELL_HEIGHT/1.2 ))
         self.draw_X = pygame.transform.scale(self.draw_X, (CELL_WIDTH/1.2, CELL_HEIGHT/1.2))
 
-        # self.scaled_bg = pygame.transform.scale(self.bg_image, SIZESCREEN)
-        # self.screen.blit(self.scaled_bg, (0, 0))
-
         #initialization icon
         pygame.display.set_icon(self.icon)
 
@@ -46,20 +43,13 @@ class Board:
 
     #drawing sticks as net
     def draw_net(self):
-        # horiziontal - poziomo
+        # horiziontal
         self.screen.blit(self.stickh1, (MARGIN_WIDTH, MARGIN_HEIGHT + CELL_HEIGHT -20))
         self.screen.blit(self.stickh2, (MARGIN_WIDTH, MARGIN_HEIGHT + 2 * CELL_HEIGHT -20))
-        # vertical - pionowo
+        # vertical
         self.screen.blit(self.stick1, (MARGIN_WIDTH + CELL_WIDTH -20, MARGIN_HEIGHT ))
         self.screen.blit(self.stick2, (MARGIN_WIDTH + 2 * CELL_WIDTH -20, MARGIN_HEIGHT))
 
-
-        #rysowanie lini pomocniczne - do usunięcia
-        # for i in range(1, 3):
-        #     pygame.draw.line(self.screen, (255,255,255), (MARGIN_WIDTH + CELL_WIDTH * i, MARGIN_HEIGHT),
-        #                      (MARGIN_WIDTH + CELL_WIDTH * i, HEIGHT - MARGIN_HEIGHT))
-        #     pygame.draw.line(self.screen, (255,255,255), (MARGIN_WIDTH, MARGIN_HEIGHT + CELL_HEIGHT * i),
-        #                      (WIDTH - MARGIN_WIDTH, MARGIN_HEIGHT + CELL_HEIGHT * i))
 
     #drawing cells and catch drawing images
     def draw_cells(self):
@@ -110,3 +100,69 @@ class Board:
         position.center = (WIDTH/2, MARGIN_HEIGHT/2)
         self.screen.blit(text, position)
 
+
+    # checking wins of players
+    def check_wins(self, field):
+        player1 = ["O","O","O"]
+        player2 = ["X","X","X"]
+
+        def marker(x, y):
+            return field[x + y * 3]
+
+        # checking rows
+        for x in range(3):
+            rows = [marker(x, y) for y in range(3)]
+            if rows == player1:
+                return 1
+            elif rows == player2:
+                return 2
+
+        # checking columns
+        for y in range(3):
+            cols = [marker(x, y) for x in range(3)]
+            if cols == player1:
+                return 1
+            elif cols == player2:
+                return 2
+
+        # checking across
+        across1 = [marker(x, x) for x in range(3)]
+        across2 = [marker(x, abs(x-2)) for x in range(3)]
+        if across1 == player1 or across2 == player1:
+            return 1
+        elif across1 == player2 or across2 == player2:
+            return 2
+
+        return 0
+
+    # if player win fill black window and draw who win or remis
+    def draw_score(self):
+        def screen_upd(self,text):
+            text = self.font.render(text, True, (180, 180, 180))
+            position = text.get_rect()
+            position.center = (WIDTH / 2, HEIGHT / 2)
+            self.fill_black()
+            self.screen.blit(text, position)
+            self.update_screen()
+
+        if self.check_wins(self.field) == 1:
+            text = "Gracz 1 WYGRAŁ"
+            screen_upd(self, text)
+        elif self.check_wins(self.field) == 2:
+            text = "Gracz 2 WYGRAŁ"
+            screen_upd(self, text)
+        elif None not in self.field:
+            text = "REMIS!"
+            screen_upd(self, text)
+        else:
+            return
+
+
+
+    # set window to black
+    def fill_black(self):
+        self.screen.fill((0, 0, 0))
+
+    # update screen
+    def update_screen(self):
+        pygame.display.flip()

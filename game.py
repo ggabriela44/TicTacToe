@@ -1,3 +1,4 @@
+import pygame, sys
 import pygame.locals
 from settings import *
 from board import *
@@ -34,6 +35,10 @@ class TicTacToe:
             self.board.draw_net()
             self.board.draw_cells()
             self.board.draw_lyrics(self.move)
+
+            self.board.draw_score()
+
+
             pygame.display.update()
 
             self.clock.tick(FPS)

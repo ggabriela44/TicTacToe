@@ -66,7 +66,7 @@ class Board:
 
 
     #position where player click on the board
-    def player_pos(self, pos_x, pos_y, MOVE):
+    def player_pos(self, pos_x, pos_y, MOVE, ai=None):
         if pos_x >= MARGIN_WIDTH and pos_x <= WIDTH-MARGIN_WIDTH and pos_y >= MARGIN_HEIGHT and pos_y <= HEIGHT-MARGIN_HEIGHT:
             pos_x = (pos_x - MARGIN_WIDTH ) // CELL_WIDTH
             pos_y = (pos_y - MARGIN_HEIGHT) // CELL_HEIGHT
@@ -75,9 +75,15 @@ class Board:
             if not self.field[int(pos_x) + int(pos_y) * 3]:
                 if MOVE == 1:
                     self.field[int(pos_x) + int(pos_y) * 3] = "O"
-                    return 2
+                    if ai is None:
+                        return 2
+                    else:
+                        return 3
                 elif MOVE == 2:
                     self.field[int(pos_x) + int(pos_y) * 3] = "X"
+                    return 1
+                elif MOVE == 3:
+                    #ruch komputera #K
                     return 1
             return MOVE
 

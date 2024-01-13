@@ -12,6 +12,7 @@ class TicTacToe:
         self.board = Board()
         self.turn = 1
         self.move = MOVE
+        self.mode = MODE
 
     def run_game(self):
         while self.running:
@@ -24,11 +25,11 @@ class TicTacToe:
                 elif event.type == pygame.locals.MOUSEBUTTONDOWN:
                     if self.move == 1:  # player
                         x, y = pygame.mouse.get_pos()
-                        self.move = self.board.player_pos(x, y,  self.move)
+                        self.move = self.board.player_move(x, y, self.move, self.mode)
 
                     elif self.move == 2:  # 2nd-player
                         x, y = pygame.mouse.get_pos()
-                        self.move = self.board.player_pos(x, y,  self.move)
+                        self.move = self.board.player_move(x, y, self.move, self.mode)
 
 
             self.board.draw_board()

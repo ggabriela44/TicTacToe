@@ -1,7 +1,5 @@
 import pygame, sys
 import pygame.locals
-
-import game
 from settings import *
 
 

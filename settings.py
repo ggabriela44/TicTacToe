@@ -19,19 +19,23 @@ CELL_HEIGHT = (HEIGHT - MARGIN_HEIGHT *2) // 3
 # 0 - set?, 1 - player, 2 - ai
 
 # MODE - game mode: 1 - PvP (default), 2 - player vs computer(normal mode), 3 - player vs computer(extreme mode)
-MODE = 2
+# MODE = 1
 
 # MOVE 1 - player1 (default), 2 - player2, 3 - computer //current move
-MOVE = 1
+# MOVE = 1
 
+FIELD = [None] * 9
 
 # not defined functions
 
-# 0 - nobody, 1 - player, 2 - ai
-WINS = 0
-
-# flag
-WIN = 0
 
 
+
+#fonts
+FONT = "Courier New"
+FONT_COLOR = (180, 180, 180) #default
+FONT_SIZE = 40
+
+BLACK = (0,0,0)
+WHITE = (180, 180, 180)
 

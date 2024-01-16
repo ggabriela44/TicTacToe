@@ -1,8 +1,3 @@
-import sys
-import pygame
-import pygame.locals
-from settings import *
-from board import *
 from game import *
 
 if __name__ == "__main__":

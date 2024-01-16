@@ -1,49 +1,144 @@
 import pygame, sys
 import pygame.locals
-from settings import *
-from board import *
+import settings
+import board
+import time
+import menu
 
 
 class TicTacToe:
     def __init__(self):
         pygame.init()
+        self.screen = pygame.display.set_mode(settings.SIZESCREEN)
         self.clock = pygame.time.Clock()
         self.running = True
-        self.board = Board()
-        self.turn = 1
-        self.move = MOVE
-        self.mode = MODE
+        self.game_state = menu.GameState.MainMenu
+        self.board = board.Board(self.screen, self.game_state)
+        self.move = menu.Move.Player1
+        self.game_mode = menu.GameMode.PVP  # default pvp
+        menu.add_btn()
 
     def run_game(self):
         while self.running:
+            # PAUZA - KONIEC ROZGRYWKI
+            if self.game_state == menu.GameState.Pause:
+                for buttons in menu.pause_menu_buttons:
+                    state = buttons.process(self.screen)
+                    if state is not None:
+                        self.game_state = state
+                        wait = 0.1
+
+             #REST GAME
+            if self.game_state == menu.GameState.Reset:
+                # pass
+                #TODO reset recover
+                #
+                self.screen = pygame.display.set_mode(settings.SIZESCREEN)
+                self.clock = pygame.time.Clock()
+                self.running = True
+                self.game_state = menu.GameState.MainMenu
+                self.board = board.Board(self.screen, self.game_state)
+                self.move = menu.Move.Player1
+                self.game_mode = menu.GameMode.PVP
+                self.board.image_draw = None
+                self.board.field = settings.FIELD
+                continue
+
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        self.running = False
-                elif event.type == pygame.locals.MOUSEBUTTONDOWN:
-                    if self.move == 1:  # player
-                        x, y = pygame.mouse.get_pos()
-                        self.move = self.board.player_move(x, y, self.move, self.mode)
-
-                    elif self.move == 2:  # 2nd-player
-                        x, y = pygame.mouse.get_pos()
-                        self.move = self.board.player_move(x, y, self.move, self.mode)
+                if self.game_state == menu.GameState.Exit:
+                    self.running = False
 
 
-            self.board.draw_board()
-            self.board.draw_net()
-            self.board.draw_cells()
-            self.board.draw_lyrics(self.move)
+                # POCZĄTKOWE MENU
+                if self.game_state == menu.GameState.MainMenu:
+                    self.board.draw_board()
+                    for buttons in menu.main_menu_buttons:
+                        state = buttons.process(self.screen)
+                        if state is not None:
+                            self.game_state = state
+                            wait = 0.5
 
-            self.board.draw_score()
+                # MENU TRYB GRY
+                elif self.game_state == menu.GameState.PlayerMenu:
+                    self.board.draw_board()
+                    for button in menu.game_mode_buttons:
+                        mode_btn = button.process(self.screen)
+                        if mode_btn is not None:
+                            self.game_state = menu.GameState.Game
+                            self.game_mode = mode_btn
+                            wait = 0.5
 
+                elif self.game_state == menu.GameState.Game:
+
+                    self.board.draw_board()
+                    self.board.draw_net()
+                    self.board.draw_cells()
+
+                    pause = self.board.draw_score(self.move)
+                    if pause == 5:
+                        self.game_state = menu.GameState.Pause
+                        self.game_mode = 0
+                        continue
+                    else:
+                        self.board.draw_lyrics(self.move)
+
+                    # P1 VS P2
+                    if self.game_mode == menu.GameMode.PVP:
+                        # PLAYER
+                        if event.type == pygame.locals.MOUSEBUTTONDOWN:
+                            if self.move == menu.Move.Player1:  # player
+                                x, y = pygame.mouse.get_pos()
+                                self.move = self.board.player_move(x, y, self.move, self.game_mode)
+                                # print("move " ,self.move )
+                                if self.move is None:
+                                    self.move = menu.Move.Player1
+                            # PLAYER2
+                            elif self.move == menu.Move.Player2:  # 2nd-player
+                                x, y = pygame.mouse.get_pos()
+                                self.move = self.board.player_move(x, y, self.move, self.game_mode)
+                                if self.move is None:
+                                    self.move = menu.Move.Player2
+
+                    # NORMAL MODE VS AI
+                    elif self.game_mode == menu.GameMode.Normal:
+                        # PLAYER
+                        if event.type == pygame.locals.MOUSEBUTTONDOWN and self.move != menu.Move.AI:
+                            if self.move == menu.Move.Player1:  # player
+                                x, y = pygame.mouse.get_pos()
+                                self.move = self.board.player_move(x, y, self.move, self.game_mode)
+                                if self.move is None:
+                                    self.move = menu.Move.Player1
+
+                        # COMPUTER
+                        elif self.move == menu.Move.AI:  # computer
+                            pass
+                            # TODO normal mode computer move
+                            #  return self.move
+
+                    # EXTREME MODE VS AI
+                    elif self.game_mode == menu.GameMode.Extreme:
+                        # PLAYER
+                        if event.type == pygame.locals.MOUSEBUTTONDOWN and self.move != menu.Move.AI:
+                            if self.move == menu.Move.Player1:
+                                x, y = pygame.mouse.get_pos()
+                                self.move = self.board.player_move(x, y, self.move, self.game_mode)
+                                if self.move is None:
+                                    self.move = menu.Move.Player1
+                        # COMPUTER
+                        elif self.move == menu.Move.AI:
+                            pass
+                            # TODO extreme mode computer move
+                            #  return self.move
 
             pygame.display.update()
 
-            self.clock.tick(FPS)
+            self.clock.tick(settings.FPS)
+            if menu.wait is not None:
+                time.sleep(menu.wait)
+                menu.wait = None
 
         pygame.quit()
         sys.exit()
-

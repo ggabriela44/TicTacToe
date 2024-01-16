@@ -1,12 +1,13 @@
-import pygame, sys
 import pygame.locals
+import settings
 from settings import *
-
+import menu
 
 class Board:
-    def __init__(self):
+    def __init__(self, screen, game_state):
         self.image_draw = None
-        self.screen = pygame.display.set_mode(SIZESCREEN)
+        # self.screen = pygame.display.set_mode(SIZESCREEN)
+        self.screen = screen
         pygame.display.set_caption("Kółko Krzyżyk")
 
         self.bg_image = pygame.image.load("./images/background_wood.png").convert_alpha()
@@ -23,32 +24,35 @@ class Board:
 
         self.draw_0 = pygame.image.load("images/bamboo_O.png").convert_alpha()
         self.draw_X = pygame.image.load("images/bamboo_X.png").convert_alpha()
-        self.draw_0 = pygame.transform.scale(self.draw_0, (CELL_WIDTH/1.2, CELL_HEIGHT/1.2 ))
-        self.draw_X = pygame.transform.scale(self.draw_X, (CELL_WIDTH/1.2, CELL_HEIGHT/1.2))
+        self.draw_0 = pygame.transform.scale(self.draw_0, (CELL_WIDTH / 1.2, CELL_HEIGHT / 1.2))
+        self.draw_X = pygame.transform.scale(self.draw_X, (CELL_WIDTH / 1.2, CELL_HEIGHT / 1.2))
 
         # initialization icon
         pygame.display.set_icon(self.icon)
 
         # initialization fonts
         pygame.font.init()
-        self.font = pygame.font.SysFont("Courier New", 40)
+        # self.font = FONT
+        self.font = pygame.font.SysFont(settings.FONT, settings.FONT_SIZE)
 
         # FIELD GAME 3 x 3
-        self.field = [None] * 9
+        self.field = FIELD
+
+        self.game_state = game_state
 
     # drawing board - filling backgorund image
     def draw_board(self):
-        self.scaled_bg = pygame.transform.scale(self.bg_image, SIZESCREEN)
-        self.screen.blit(self.scaled_bg, (0, 0))
+        scaled_bg = pygame.transform.scale(self.bg_image, SIZESCREEN)
+        self.screen.blit(scaled_bg, (0, 0))
 
     # drawing sticks as net
     def draw_net(self):
         # horizontal
-        self.screen.blit(self.stickh1, (MARGIN_WIDTH, MARGIN_HEIGHT + CELL_HEIGHT -20))
-        self.screen.blit(self.stickh2, (MARGIN_WIDTH, MARGIN_HEIGHT + 2 * CELL_HEIGHT -20))
+        self.screen.blit(self.stickh1, (MARGIN_WIDTH, MARGIN_HEIGHT + CELL_HEIGHT - 20))
+        self.screen.blit(self.stickh2, (MARGIN_WIDTH, MARGIN_HEIGHT + 2 * CELL_HEIGHT - 20))
         # vertical
-        self.screen.blit(self.stick1, (MARGIN_WIDTH + CELL_WIDTH -20, MARGIN_HEIGHT ))
-        self.screen.blit(self.stick2, (MARGIN_WIDTH + 2 * CELL_WIDTH -20, MARGIN_HEIGHT))
+        self.screen.blit(self.stick1, (MARGIN_WIDTH + CELL_WIDTH - 20, MARGIN_HEIGHT))
+        self.screen.blit(self.stick2, (MARGIN_WIDTH + 2 * CELL_WIDTH - 20, MARGIN_HEIGHT))
 
     # drawing cells and catch drawing images
     def draw_cells(self):
@@ -64,28 +68,21 @@ class Board:
                 self.draw_pointer(self.screen, field, cell_x, cell_y)
 
     # player_move - position where player clicks on the board or position where computer plays
-    def player_move(self, pos_x, pos_y, move=MOVE, mode=MODE):
-        if MARGIN_WIDTH <= pos_x <= WIDTH-MARGIN_WIDTH and MARGIN_HEIGHT <= pos_y <= HEIGHT-MARGIN_HEIGHT:
+    def player_move(self, pos_x, pos_y, move=menu.Move.Player1, mode=menu.GameMode.PVP):
+        if MARGIN_WIDTH <= pos_x <= WIDTH - MARGIN_WIDTH and MARGIN_HEIGHT <= pos_y <= HEIGHT - MARGIN_HEIGHT:
             pos_x = (pos_x - MARGIN_WIDTH) // CELL_WIDTH
             pos_y = (pos_y - MARGIN_HEIGHT) // CELL_HEIGHT
-
             # fill the list
             if not self.field[int(pos_x) + int(pos_y) * 3]:
-                if move == 1:
+                if move == menu.Move.Player1:
                     self.field[int(pos_x) + int(pos_y) * 3] = "O"
-                    if mode == 1:
-                        return 2
+                    if mode == menu.GameMode.PVP:
+                        return menu.Move.Player2
                     else:
-                        return 3
-                elif move == 2:
+                        return menu.Move.AI
+                elif move == menu.Move.Player2:
                     self.field[int(pos_x) + int(pos_y) * 3] = "X"
-                    return 1
-                elif move == 3:
-                    position = self.computer_player_move(mode)
-                    self.field[position] = "X"
-                    # ruch komputera #K
-                    # computer_move(mode)
-                    return 1
+                    return menu.Move.Player1
             return move
 
     def computer_player_move(self, mode):
@@ -99,9 +96,8 @@ class Board:
             # minimax
             pass
 
-
     # drawing image on the net
-    def draw_pointer(self, screen,  text,x, y):
+    def draw_pointer(self, screen, text, x, y):
         if text == "O":
             self.image_draw = self.draw_0
         elif text == "X":
@@ -109,13 +105,19 @@ class Board:
         screen.blit(self.image_draw, [x - 15, y + 35])
 
     def draw_lyrics(self, turn):
-        if turn == 1:
+
+        if turn == menu.Move.Player1:
             text = "Ruch: Gracz 1"
-        elif turn == 2:
+        elif turn == menu.Move.Player2:
             text = "Ruch: Gracz 2"
+        elif turn == menu.Move.AI:
+            text = "Ruch: Komputer"
+        else:
+            text = "Proszę wybrać puste pole" #błąd!
+
         text = self.font.render(text, True, (180, 180, 180))
         position = text.get_rect()
-        position.center = (WIDTH/2, MARGIN_HEIGHT/2)
+        position.center = (WIDTH / 2, MARGIN_HEIGHT / 2)
         self.screen.blit(text, position)
 
     # checking wins of players
@@ -144,7 +146,7 @@ class Board:
 
         # checking across
         across1 = [marker(x, x) for x in range(3)]
-        across2 = [marker(x, abs(x-2)) for x in range(3)]
+        across2 = [marker(x, abs(x - 2)) for x in range(3)]
         if across1 == player1 or across2 == player1:
             return 1
         elif across1 == player2 or across2 == player2:
@@ -152,34 +154,40 @@ class Board:
 
         return 0
 
+
     # if player win fill black window and draw who win or remis
-    def draw_score(self):
-        def screen_upd(self, text):
-            text = self.font.render(text, True, (180, 180, 180))
+    def draw_score(self, turn):
+        def draw(text):
+            font2 = pygame.font.SysFont(settings.FONT, 50)
+            text = font2.render(text, True, (255, 153, 153))
             position = text.get_rect()
-            position.center = (WIDTH / 2, HEIGHT / 2)
-            self.fill_black()
+            position.center = (WIDTH / 2, MARGIN_HEIGHT / 2)
+
             self.screen.blit(text, position)
-            self.update_screen()
+            pygame.display.flip()
+            pygame.display.update()
+
+
 
         if self.check_wins(self.field) == 1:
-            text = "Gracz 1 WYGRAŁ"
-            screen_upd(self, text)
+            text = "WYGRAŁ Gracz 1"
+            draw(text)
+            return 5
+
         elif self.check_wins(self.field) == 2:
-            text = "Gracz 2 WYGRAŁ"
-            screen_upd(self, text)
+            if turn == menu.Move.Player2:
+                text = "WYGRAŁ Gracz 2"
+            elif turn == menu.Move.AI:
+                text = "WYGRAŁ Komputer"
+            draw(text)
+            return 5
+
         elif None not in self.field:
             text = "REMIS!"
-            screen_upd(self, text)
+            draw(text)
+            return 5
+
         else:
             return
 
 
-
-    # set window to black
-    def fill_black(self):
-        self.screen.fill((0, 0, 0))
-
-    # update screen
-    def update_screen(self):
-        pygame.display.flip()

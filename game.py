@@ -26,10 +26,22 @@ class TicTacToe:
                     if self.move == 1:  # player
                         x, y = pygame.mouse.get_pos()
                         self.move = self.board.player_move(x, y, self.move, self.mode)
+                        print(f'next_move = {self.move}') #T
+                        print(f'mode = {self.mode}') #T
+                        print('------------------------------------') #T
 
                     elif self.move == 2:  # 2nd-player
                         x, y = pygame.mouse.get_pos()
                         self.move = self.board.player_move(x, y, self.move, self.mode)
+                        print(f'next_move = {self.move}') #T
+                        print(f'mode = {self.mode}') #T
+                        print('------------------------------------') #T
+
+            if self.move == 3:    # computer
+                self.move = self.board.computer_player_move()
+                print(f'next_move = {self.move}') #T
+                print(f'mode = {self.mode}') #T
+                print('------------------------------------') #T
 
 
             self.board.draw_board()

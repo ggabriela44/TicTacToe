@@ -19,7 +19,7 @@ CELL_HEIGHT = (HEIGHT - MARGIN_HEIGHT *2) // 3
 # 0 - set?, 1 - player, 2 - ai
 
 # MODE - game mode: 1 - PvP (default), 2 - player vs computer(normal mode), 3 - player vs computer(extreme mode)
-MODE = 1
+MODE = 2
 
 # MOVE 1 - player1 (default), 2 - player2, 3 - computer //current move
 MOVE = 1

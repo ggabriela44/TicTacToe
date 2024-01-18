@@ -28,11 +28,8 @@ class TicTacToe:
                         self.game_state = state
                         wait = 0.1
 
-             #REST GAME
+            # RESET GAME
             if self.game_state == menu.GameState.Reset:
-                # pass
-                #TODO reset recover
-                #
                 self.screen = pygame.display.set_mode(settings.SIZESCREEN)
                 self.clock = pygame.time.Clock()
                 self.running = True
@@ -41,16 +38,15 @@ class TicTacToe:
                 self.move = menu.Move.Player1
                 self.game_mode = menu.GameMode.PVP
                 self.board.image_draw = None
+                settings.FIELD = [None] * 9
                 self.board.field = settings.FIELD
                 continue
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 if self.game_state == menu.GameState.Exit:
                     self.running = False
-
 
                 # POCZĄTKOWE MENU
                 if self.game_state == menu.GameState.MainMenu:
@@ -72,7 +68,6 @@ class TicTacToe:
                             wait = 0.5
 
                 elif self.game_state == menu.GameState.Game:
-
                     self.board.draw_board()
                     self.board.draw_net()
                     self.board.draw_cells()
@@ -92,7 +87,6 @@ class TicTacToe:
                             if self.move == menu.Move.Player1:  # player
                                 x, y = pygame.mouse.get_pos()
                                 self.move = self.board.player_move(x, y, self.move, self.game_mode)
-                                # print("move " ,self.move )
                                 if self.move is None:
                                     self.move = menu.Move.Player1
                             # PLAYER2
@@ -102,7 +96,7 @@ class TicTacToe:
                                 if self.move is None:
                                     self.move = menu.Move.Player2
 
-                    # NORMAL MODE VS AI
+                    # PLAYER1 VS AI(NORMAL MODE)
                     elif self.game_mode == menu.GameMode.Normal:
                         # PLAYER
                         if event.type == pygame.locals.MOUSEBUTTONDOWN and self.move != menu.Move.AI:
@@ -112,13 +106,11 @@ class TicTacToe:
                                 if self.move is None:
                                     self.move = menu.Move.Player1
 
-                        # COMPUTER
-                        elif self.move == menu.Move.AI:  # computer
-                            pass
-                            # TODO normal mode computer move
-                            #  return self.move
+                        # AI/COMPUTER
+                        elif self.move == menu.Move.AI:
+                            self.move = self.board.computer_player_move(self.game_mode)
 
-                    # EXTREME MODE VS AI
+                    # PLAYER1 VS AI(EXTREME MODE)
                     elif self.game_mode == menu.GameMode.Extreme:
                         # PLAYER
                         if event.type == pygame.locals.MOUSEBUTTONDOWN and self.move != menu.Move.AI:
@@ -127,11 +119,9 @@ class TicTacToe:
                                 self.move = self.board.player_move(x, y, self.move, self.game_mode)
                                 if self.move is None:
                                     self.move = menu.Move.Player1
-                        # COMPUTER
+                        # AI/COMPUTER
                         elif self.move == menu.Move.AI:
-                            pass
-                            # TODO extreme mode computer move
-                            #  return self.move
+                            self.move = self.board.computer_player_move(self.game_mode)
 
             pygame.display.update()
 

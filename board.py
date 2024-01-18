@@ -1,7 +1,10 @@
 import pygame.locals
+import random
+import game
 import settings
 from settings import *
 import menu
+
 
 class Board:
     def __init__(self, screen, game_state):
@@ -40,7 +43,7 @@ class Board:
 
         self.game_state = game_state
 
-    # drawing board - filling backgorund image
+    # drawing board - filling background image
     def draw_board(self):
         scaled_bg = pygame.transform.scale(self.bg_image, SIZESCREEN)
         self.screen.blit(scaled_bg, (0, 0))
@@ -67,7 +70,7 @@ class Board:
                 # drawing X or O on the field
                 self.draw_pointer(self.screen, field, cell_x, cell_y)
 
-    # player_move - position where player clicks on the board or position where computer plays
+    # player_move - position where player clicks on the board
     def player_move(self, pos_x, pos_y, move=menu.Move.Player1, mode=menu.GameMode.PVP):
         if MARGIN_WIDTH <= pos_x <= WIDTH - MARGIN_WIDTH and MARGIN_HEIGHT <= pos_y <= HEIGHT - MARGIN_HEIGHT:
             pos_x = (pos_x - MARGIN_WIDTH) // CELL_WIDTH
@@ -86,15 +89,149 @@ class Board:
             return move
 
     def computer_player_move(self, mode):
-        field = self.field
-        if mode == 2:
-            # check if can win
-            # check if must block
-            # random move
-            pass
-        elif mode == 3:
-            # minimax
-            pass
+        field_copy = self.field.copy()
+        if mode == menu.GameMode.Normal:
+
+            # checking if computer can win in it's move
+            for position in range(len(field_copy)):
+                if field_copy[position] is not None:
+                    continue
+                else:
+                    field_copy[position] = "X"
+                    is_winning_position = self.check_wins(field_copy)
+                    if is_winning_position != 2:
+                        field_copy[position] = None
+                        continue
+                    else:
+                        del field_copy
+                        self.field[position] = "X"
+                        return menu.Move.Player1
+
+            # checking if computer must block oponent's next move
+            for position in range(len(field_copy)):
+                if field_copy[position] is not None:
+                    continue
+                else:
+                    field_copy[position] = "O"
+                    is_winning_position = self.check_wins(field_copy)
+                    if is_winning_position != 1:
+                        field_copy[position] = None
+                        continue
+                    else:
+                        del field_copy
+                        self.field[position] = "X"
+                        return menu.Move.Player1
+
+            # making random move
+            none_positions = [position for position, value in enumerate(field_copy) if value is None]
+            if len(none_positions) == 0:
+                return menu.Move.Player1
+            else:
+                position = random.choice(none_positions)
+                del field_copy
+                self.field[position] = "X"
+                return menu.Move.Player1
+
+        elif mode == menu.GameMode.Extreme:
+            best_value = -float('inf')
+            best_move = None
+            max_depth = 0
+            for position in range(len(field_copy)):
+                if field_copy[position] is not None:
+                    continue
+                else:
+                    field_copy[position] = "X"
+                    value = self.minimax(field_copy, 0, False, max_depth)  # może się jeszcze zmienić
+                    field_copy[position] = None
+                    if value > best_value:
+                        best_value = value
+                        best_move = position
+                    self.field[best_move] = "X"
+                    return menu.Move.Player1
+
+    # minimax function
+    def minimax(self, field, depth, maximize, max_depth):
+        pass
+        # TODO minimax function body
+        # print('minimax start')#T
+
+        # def score(depth):
+        #     if self.check_wins(field) == 2: #if AI wins
+        #         return 10 - depth
+        #     elif self.check_wins(field) == 1: #if player wins
+        #         return depth - 10
+        #     else:
+        #         return 0
+        #
+        # if (self.check_wins(field) == 0) or (self.check_wins(field) == 1) or (None not in field):
+        #     return score()
+
+
+
+        # # function checking if game is over
+        # def end_of_game():
+        #     print('end of game')#T
+        #     if self.check_wins(field) == 1 or self.check_wins(field) == 2 or (None not in field):
+        #         return True
+        #     else:
+        #         return False
+        #
+        # # function assigning points at the end of the game
+        # def assign_points():
+        #     print("assign points")#T
+        #     if self.check_wins(field) == 2:
+        #         return 1
+        #     elif self.check_wins(field) == 1:
+        #         return -1
+        #     elif self.check_wins(field) == 0:
+        #         return 0
+        #
+        # def free_positions():
+        #     print('free positions')#T
+        #     return [position for position, value in enumerate(field) if value is not None]
+        #
+        # def next_player(actual_player):
+        #     if actual_player == menu.Move.AI:
+        #         return menu.Move.Player1
+        #     elif actual_player == menu.Move.Player1:
+        #         return menu.Move.AI
+        #
+        # if end_of_game():
+        #     points = assign_points()
+        #     print(f'assigned points: {points}')
+        #     return points
+        #
+        # if player == menu.Move.AI:
+        #     print('minimax - ruch komputera')
+        #     best_value = float('-inf')
+        #     best_move = None
+        #     for position in free_positions():
+        #         field[position] = "X"
+        #         move_value = self.minimax(field, next_player(menu.Move.AI))
+        #         field[position] = None
+        #         if move_value > best_value:
+        #             best_value = move_value
+        #             best_move = position
+        #     print(f'best value for "X": {best_value}')
+        #     print(f'best position for "X": {best_move}')
+        #     return best_move
+        # elif player == menu.Move.Player1:
+        #     print('minimax - prognozowany ruch gracza')
+        #     best_value = float('inf')
+        #     best_move = None
+        #     for position in free_positions():
+        #         field[position] = "O"
+        #         move_value = self.minimax(field, next_player(menu.Move.Player1))
+        #         field[position] = None
+        #         if move_value < best_value:
+        #             best_value = move_value
+        #             best_move = position
+        #     print(f'best value for "O": {best_value}')
+        #     print(f'best position for "O": {best_move}')
+        #     return best_move
+
+
+
 
     # drawing image on the net
     def draw_pointer(self, screen, text, x, y):
@@ -112,8 +249,6 @@ class Board:
             text = "Ruch: Gracz 2"
         elif turn == menu.Move.AI:
             text = "Ruch: Komputer"
-        else:
-            text = "Proszę wybrać puste pole" #błąd!
 
         text = self.font.render(text, True, (180, 180, 180))
         position = text.get_rect()
@@ -130,7 +265,7 @@ class Board:
 
         # checking rows
         for x in range(3):
-            rows = [marker(x, y) for y in range(3)]
+            rows = [marker(y, x) for y in range(3)]
             if rows == player1:
                 return 1
             elif rows == player2:
@@ -138,7 +273,7 @@ class Board:
 
         # checking columns
         for y in range(3):
-            cols = [marker(x, y) for x in range(3)]
+            cols = [marker(y, x) for x in range(3)]
             if cols == player1:
                 return 1
             elif cols == player2:
@@ -154,8 +289,7 @@ class Board:
 
         return 0
 
-
-    # if player win fill black window and draw who win or remis
+    # if player wins than draw who wins or remis
     def draw_score(self, turn):
         def draw(text):
             font2 = pygame.font.SysFont(settings.FONT, 50)
@@ -167,17 +301,15 @@ class Board:
             pygame.display.flip()
             pygame.display.update()
 
-
-
         if self.check_wins(self.field) == 1:
             text = "WYGRAŁ Gracz 1"
             draw(text)
             return 5
 
         elif self.check_wins(self.field) == 2:
-            if turn == menu.Move.Player2:
+            if menu.GameMode.PVP:
                 text = "WYGRAŁ Gracz 2"
-            elif turn == menu.Move.AI:
+            elif menu.GameMode.Normal or menu.GameMode.Extreme:
                 text = "WYGRAŁ Komputer"
             draw(text)
             return 5
@@ -189,5 +321,3 @@ class Board:
 
         else:
             return
-
-

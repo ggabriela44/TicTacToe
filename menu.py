@@ -19,6 +19,7 @@ class GameState(Enum):
     Pause = 5
     Reset = 6
 
+
 class GameMode(Enum):
     PVP = 1
     Normal = 2
@@ -31,12 +32,14 @@ class Move(Enum):
     AI = 3
 
 
-# zdarzenia przyciskow
+# zdarzenia przycisków
 def set_pause_state():
     return GameState.Pause
 
+
 def set_reset_state():
     return GameState.Reset
+
 
 def set_pvp_mode():
     return GameMode.PVP

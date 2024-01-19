@@ -19,7 +19,7 @@ class Button():
 
         self.buttonSurface.fill((0, 0, 0, 0))
         if bg_color is not None:
-            self.buttonSurface.fill((51, 102, 0, 255))
+            self.buttonSurface.fill((51, 102, 0, 150))
             self.buttonSurface.set_alpha(128)
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
 
@@ -31,14 +31,11 @@ class Button():
         if self.current_cursor != "arrow":
             self.pygame.mouse.set_system_cursor(self.pygame.SYSTEM_CURSOR_ARROW)
             self.current_cursor = "arrow"
-        # self.buttonSurface.fill(self.fillColors['white'])
         if self.buttonRect.collidepoint(mouse_pos):
             if self.current_cursor != "hand":
                 self.pygame.mouse.set_system_cursor(self.pygame.SYSTEM_CURSOR_HAND)
                 self.current_cursor = "hand"
-            # self.buttonSurface.fill(self.fillColors['hover'])
             if self.pygame.mouse.get_pressed(num_buttons=3)[0]:
-                # self.buttonSurface.fill(self.fillColors['pressed'])
                 if self.onePress:
                     result = self.onclickFunction()
                 elif not self.alreadyPressed:

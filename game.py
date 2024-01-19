@@ -123,12 +123,13 @@ class TicTacToe:
                         elif self.move == menu.Move.AI:
                             self.move = self.board.computer_player_move(self.game_mode)
 
+
             pygame.display.update()
 
             self.clock.tick(settings.FPS)
-            if menu.wait is not None:
-                time.sleep(menu.wait)
-                menu.wait = None
+            if settings.wait is not None:
+                time.sleep(settings.wait)
+                settings.wait = None
 
         pygame.quit()
         sys.exit()

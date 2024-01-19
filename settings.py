@@ -1,6 +1,3 @@
-import pygame
-import pygame.locals
-
 # window config
 SIZESCREEN = WIDTH, HEIGHT = 600, 650
 
@@ -15,27 +12,17 @@ MARGIN_HEIGHT = 100
 CELL_WIDTH = (WIDTH - MARGIN_WIDTH*2) // 3
 CELL_HEIGHT = (HEIGHT - MARGIN_HEIGHT *2) // 3
 
-# in the beggining player start
-# 0 - set?, 1 - player, 2 - ai
-
-# MODE - game mode: 1 - PvP (default), 2 - player vs computer(normal mode), 3 - player vs computer(extreme mode)
-# MODE = 1
-
-# MOVE 1 - player1 (default), 2 - player2, 3 - computer //current move
-# MOVE = 1
-
+#list of position X and O
 FIELD = [None] * 9
 
-# not defined functions
-
-
-
-
-#fonts
+# fonts
 FONT = "Courier New"
 FONT_COLOR = (180, 180, 180) #default
 FONT_SIZE = 40
 
+#colors
 BLACK = (0,0,0)
 WHITE = (180, 180, 180)
 
+# time to wait
+wait = False

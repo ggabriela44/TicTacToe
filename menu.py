@@ -29,7 +29,7 @@ class GameMode(Enum):
 class Move(Enum):
     Player1 = 1
     Player2 = 2
-    AI = 3
+    AI = 3 #computer
 
 
 # zdarzenia przycisków
@@ -70,36 +70,36 @@ def set_main_menu_state():
 
 
 def add_btn():
-    width_btn = 300
-    height_btn = 100
+    width_btn = 500
+    height_btn = 50
     width_center = settings.WIDTH // 2
     height_center = settings.HEIGHT // 2
 
-    exit_button = Button(width_center - width_btn / 2, height_center, width_btn, height_btn, pygame, "EXIT",
+    exit_button = Button(width_center - width_btn / 2, height_center, width_btn, height_btn, pygame, "WYJŚCIE",
                          set_exit_state)
-    exit_button2 = Button(width_center - width_btn / 2, height_center, width_btn, height_btn, pygame, "EXIT",
+    exit_button2 = Button(width_center - width_btn / 2+50, height_center, 400, 100, pygame, "WYJŚCIE",
                           set_exit_state, 1)
 
     main_menu_buttons.append(exit_button)
     pause_menu_buttons.append(exit_button2)
 
-    play_button = Button(width_center - width_btn / 2, height_center - 100, width_btn, height_btn, pygame, "PLAY",
+    play_button = Button(width_center - width_btn / 2, height_center - 100, width_btn, height_btn, pygame, "GRAJ",
                          set_player_menu_state)
     main_menu_buttons.append(play_button)
 
-    back_button = Button(width_center - width_btn / 2, height_center - 100, width_btn, height_btn, pygame, "MENU",
+    back_button = Button(width_center - width_btn / 2 +50, height_center - 100, 400, 100, pygame, "MENU",
                          set_reset_state, 1)
     pause_menu_buttons.append(back_button)
 
     pvp_mode_button = Button(width_center - width_btn / 2, height_center - 150, width_btn, height_btn, pygame, "P1vsP2",
                              set_pvp_mode)
     normal_mode_button = Button(width_center - width_btn / 2, height_center - 50, width_btn, height_btn, pygame,
-                                "Zwykły", set_normal_mode)
+                                "Normalny", set_normal_mode)
     extreme_mode_button = Button(width_center - width_btn / 2, height_center + 50, width_btn, height_btn, pygame,
-                                 "Niebo", set_extreme_mode)
+                                 "Ekspert", set_extreme_mode)
+
     game_mode_buttons.append(pvp_mode_button)
     game_mode_buttons.append(normal_mode_button)
     game_mode_buttons.append(extreme_mode_button)
 
 
-wait = False

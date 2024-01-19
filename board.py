@@ -9,9 +9,8 @@ import menu
 class Board:
     def __init__(self, screen, game_state):
         self.image_draw = None
-        # self.screen = pygame.display.set_mode(SIZESCREEN)
         self.screen = screen
-        pygame.display.set_caption("Kółko Krzyżyk")
+        pygame.display.set_caption("Kółko i Krzyżyk")
 
         self.bg_image = pygame.image.load("./images/background_wood.png").convert_alpha()
         self.icon = pygame.image.load("./images/bamboo_X.png").convert_alpha()

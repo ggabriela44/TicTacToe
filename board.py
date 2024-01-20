@@ -242,10 +242,16 @@ class Board:
     def draw_score(self, state):
         def draw(text):
             font2 = pygame.font.SysFont(settings.FONT, 50)
-            text = font2.render(text, True, (255, 153, 153))
+            text = font2.render(text, True, (255, 255, 255))
             position = text.get_rect()
+            padding = 10
+            rect_width = settings.WIDTH
+            rect_height = position.height + padding * 2
+
+            rect = pygame.Rect(0 ,  padding , rect_width, rect_height)
             position.center = (WIDTH / 2, MARGIN_HEIGHT / 2)
 
+            pygame.draw.rect(self.screen, (51, 102, 0, 150), rect)
             self.screen.blit(text, position)
             pygame.display.flip()
             pygame.display.update()

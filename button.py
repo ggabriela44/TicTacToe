@@ -2,7 +2,7 @@
 import settings
 
 class Button():
-    def __init__(self, x, y, width, height, pygame, buttonText='Button',  onclickFunction=None, bg_color=None, onePress=False ):
+    def __init__(self, x, y, width, height, pygame, buttonText='Button',  onclickFunction=None, bg_color=None, font_size = 80, onePress=False ):
         self.x = x
         self.y = y
         self.width = width
@@ -13,7 +13,7 @@ class Button():
         self.pygame = pygame
         self.current_cursor = None
 
-        self.font = pygame.font.SysFont(settings.FONT, 80)
+        self.font = pygame.font.SysFont(settings.FONT, font_size)
 
         self.buttonSurface = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
 

@@ -132,105 +132,56 @@ class Board:
                 return menu.Move.Player1
 
         elif mode == menu.GameMode.Extreme:
-            best_value = -float('inf')
-            best_move = None
-            max_depth = 0
             for position in range(len(field_copy)):
                 if field_copy[position] is not None:
                     continue
                 else:
-                    field_copy[position] = "X"
-                    value = self.minimax(field_copy, 0, False, max_depth)  # może się jeszcze zmienić
-                    field_copy[position] = None
-                    if value > best_value:
-                        best_value = value
-                        best_move = position
-                    self.field[best_move] = "X"
+                    value, position = self.minimax(field_copy, True)
+                    self.field[position] = "X"
                     return menu.Move.Player1
 
-    # minimax function
-    def minimax(self, field, depth, maximize, max_depth):
-        pass
-        # TODO minimax function body
-        # print('minimax start')#T
+    def minimax(self, field, is_maximizing):
 
-        # def score(depth):
-        #     if self.check_wins(field) == 2: #if AI wins
-        #         return 10 - depth
-        #     elif self.check_wins(field) == 1: #if player wins
-        #         return depth - 10
-        #     else:
-        #         return 0
-        #
-        # if (self.check_wins(field) == 0) or (self.check_wins(field) == 1) or (None not in field):
-        #     return score()
+        # checking if it is end of game
+        case = self.check_wins(field)
+        if case == 1:
+            return -1, None
+        elif case == 2:
+            return 1, None
+        elif None not in field:
+            return 0, None
 
+        # move of player that wants to maximize
+        if is_maximizing:
+            max_value = -1000
+            best_move = None
+            empty_positions = [position for position, value in enumerate(field) if value is None]
 
+            for empty_position in empty_positions:
+                temp_board = field.copy()
+                temp_board[empty_position] = "X"
+                value = self.minimax(temp_board, False)[0]
 
-        # # function checking if game is over
-        # def end_of_game():
-        #     print('end of game')#T
-        #     if self.check_wins(field) == 1 or self.check_wins(field) == 2 or (None not in field):
-        #         return True
-        #     else:
-        #         return False
-        #
-        # # function assigning points at the end of the game
-        # def assign_points():
-        #     print("assign points")#T
-        #     if self.check_wins(field) == 2:
-        #         return 1
-        #     elif self.check_wins(field) == 1:
-        #         return -1
-        #     elif self.check_wins(field) == 0:
-        #         return 0
-        #
-        # def free_positions():
-        #     print('free positions')#T
-        #     return [position for position, value in enumerate(field) if value is not None]
-        #
-        # def next_player(actual_player):
-        #     if actual_player == menu.Move.AI:
-        #         return menu.Move.Player1
-        #     elif actual_player == menu.Move.Player1:
-        #         return menu.Move.AI
-        #
-        # if end_of_game():
-        #     points = assign_points()
-        #     print(f'assigned points: {points}')
-        #     return points
-        #
-        # if player == menu.Move.AI:
-        #     print('minimax - ruch komputera')
-        #     best_value = float('-inf')
-        #     best_move = None
-        #     for position in free_positions():
-        #         field[position] = "X"
-        #         move_value = self.minimax(field, next_player(menu.Move.AI))
-        #         field[position] = None
-        #         if move_value > best_value:
-        #             best_value = move_value
-        #             best_move = position
-        #     print(f'best value for "X": {best_value}')
-        #     print(f'best position for "X": {best_move}')
-        #     return best_move
-        # elif player == menu.Move.Player1:
-        #     print('minimax - prognozowany ruch gracza')
-        #     best_value = float('inf')
-        #     best_move = None
-        #     for position in free_positions():
-        #         field[position] = "O"
-        #         move_value = self.minimax(field, next_player(menu.Move.Player1))
-        #         field[position] = None
-        #         if move_value < best_value:
-        #             best_value = move_value
-        #             best_move = position
-        #     print(f'best value for "O": {best_value}')
-        #     print(f'best position for "O": {best_move}')
-        #     return best_move
+                if value > max_value:
+                    max_value = value
+                    best_move = empty_position
+            return max_value, best_move
 
+        # move of player that wants to minimize
+        elif not is_maximizing:
+            min_value = 1000
+            best_move = None
+            empty_positions = [position for position, value in enumerate(field) if value is None]
 
+            for empty_position in empty_positions:
+                temp_board = field.copy()
+                temp_board[empty_position] = "O"
+                value = self.minimax(temp_board, True)[0]
 
+                if value < min_value:
+                    min_value = value
+                    best_move = empty_position
+            return min_value, best_move
 
     # drawing image on the net
     def draw_pointer(self, screen, text, x, y):

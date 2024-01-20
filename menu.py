@@ -29,7 +29,7 @@ class GameMode(Enum):
 class Move(Enum):
     Player1 = 1
     Player2 = 2
-    AI = 3 #computer
+    AI = 3  # computer
 
 
 # zdarzenia przycisków
@@ -87,7 +87,7 @@ def add_btn():
                          set_player_menu_state)
     main_menu_buttons.append(play_button)
 
-    back_button = Button(width_center - width_btn / 2 +50, height_center - 100, 400, 100, pygame, "MENU",
+    back_button = Button(width_center - width_btn / 2 + 50, height_center - 100, 400, 100, pygame, "MENU",
                          set_reset_state, 1)
     pause_menu_buttons.append(back_button)
 

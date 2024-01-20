@@ -1,6 +1,5 @@
 import pygame.locals
 import random
-import game
 import settings
 from settings import *
 import menu

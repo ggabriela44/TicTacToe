@@ -123,7 +123,6 @@ class TicTacToe:
                         elif self.move == menu.Move.AI:
                             self.move = self.board.computer_player_move(self.game_mode)
 
-
             pygame.display.update()
 
             self.clock.tick(settings.FPS)

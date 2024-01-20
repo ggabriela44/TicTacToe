@@ -51,6 +51,7 @@ class TicTacToe:
                 # POCZĄTKOWE MENU
                 if self.game_state == menu.GameState.MainMenu:
                     self.board.draw_board()
+                    menu.draw_title(self.screen,"Kółko i Krzyżyk")
                     for buttons in menu.main_menu_buttons:
                         state = buttons.process(self.screen)
                         if state is not None:

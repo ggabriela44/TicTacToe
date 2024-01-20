@@ -61,6 +61,7 @@ class TicTacToe:
                 # MENU TRYB GRY
                 elif self.game_state == menu.GameState.PlayerMenu:
                     self.board.draw_board()
+                    menu.draw_title(self.screen,"Tryb rozgrywki:")
                     for button in menu.game_mode_buttons:
                         mode_btn = button.process(self.screen)
                         if mode_btn is not None:

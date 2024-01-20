@@ -239,7 +239,7 @@ class Board:
         return 0
 
     # if player wins than draw who wins or remis
-    def draw_score(self, turn):
+    def draw_score(self, state):
         def draw(text):
             font2 = pygame.font.SysFont(settings.FONT, 50)
             text = font2.render(text, True, (255, 153, 153))
@@ -256,9 +256,9 @@ class Board:
             return 5
 
         elif self.check_wins(self.field) == 2:
-            if menu.GameMode.PVP:
+            if state == menu.GameMode.PVP:
                 text = "WYGRAŁ Gracz 2"
-            elif menu.GameMode.Normal or menu.GameMode.Extreme:
+            elif state == menu.GameMode.Normal or state == menu.GameMode.Extreme:
                 text = "WYGRAŁ Komputer"
             draw(text)
             return 5

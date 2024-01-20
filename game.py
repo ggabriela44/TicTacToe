@@ -72,7 +72,7 @@ class TicTacToe:
                     self.board.draw_net()
                     self.board.draw_cells()
 
-                    pause = self.board.draw_score(self.move)
+                    pause = self.board.draw_score(self.game_mode)
                     if pause == 5:
                         self.game_state = menu.GameState.Pause
                         self.game_mode = 0

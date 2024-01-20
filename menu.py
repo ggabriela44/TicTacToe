@@ -69,6 +69,14 @@ def set_main_menu_state():
     return GameState.MainMenu
 
 
+def draw_title(screen, text):
+    font = pygame.font.SysFont(settings.FONT, 50)
+    text = font.render(text, True, (180, 180, 180))
+    position = text.get_rect()
+    position.center = (settings.WIDTH / 2, settings.MARGIN_HEIGHT )
+    screen.blit(text, position)
+
+
 def add_btn():
     width_btn = 570
     height_btn = 75

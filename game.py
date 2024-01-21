@@ -44,7 +44,7 @@ class TicTacToe:
                 self.board.field = settings.FIELD
                 continue
 
-            # REVENGE GAME
+            # REMATCH
             if self.game_state == menu.GameState.Rematch:
                 self.clock = pygame.time.Clock()
                 self.running = True

@@ -18,6 +18,7 @@ class GameState(Enum):
     Game = 4
     Pause = 5
     Reset = 6
+    Rematch = 7
 
 
 class GameMode(Enum):
@@ -33,6 +34,10 @@ class Move(Enum):
 
 
 # zdarzenia przycisków
+
+def set_revenge_state():
+    return GameState.Rematch
+
 def set_pause_state():
     return GameState.Pause
 
@@ -85,11 +90,11 @@ def add_btn():
 
     exit_button = Button(width_center - width_btn / 2, height_center, width_btn, height_btn, pygame, "WYJŚCIE",
                          set_exit_state)
-    exit_button2 = Button(settings.WIDTH-width_btn / 2+20, settings.HEIGHT-settings.MARGIN_HEIGHT+5, 200, 75, pygame, "WYJŚCIE",
-                          set_exit_state, 1, 40)
+    rematch_button = Button(settings.WIDTH-width_btn / 2+20, settings.HEIGHT-settings.MARGIN_HEIGHT+5, 200, 75, pygame, "REWANŻ",
+                          set_revenge_state, 1, 40)
 
     main_menu_buttons.append(exit_button)
-    pause_menu_buttons.append(exit_button2)
+    pause_menu_buttons.append(rematch_button)
 
     play_button = Button(width_center - width_btn / 2, height_center - 100, width_btn, height_btn, pygame, "GRAJ",
                          set_player_menu_state)

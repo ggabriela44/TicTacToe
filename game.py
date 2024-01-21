@@ -26,6 +26,7 @@ class TicTacToe:
                     state = buttons.process(self.screen)
                     if state is not None:
                         self.game_state = state
+                        # self.game_mode = self.game_mode
                         wait = 0.1
 
             # RESET GAME
@@ -37,6 +38,18 @@ class TicTacToe:
                 self.board = board.Board(self.screen, self.game_state)
                 self.move = menu.Move.Player1
                 self.game_mode = menu.GameMode.PVP
+                self.board.image_draw = None
+                settings.FIELD = [None] * 9
+                self.board.field = settings.FIELD
+                continue
+
+            #REVENGE GAME
+            if self.game_state == menu.GameState.Rematch:
+                self.clock = pygame.time.Clock()
+                self.running = True
+                self.game_state = menu.GameState.Game
+                self.board = board.Board(self.screen, self.game_state)
+                self.move = menu.Move.Player1
                 self.board.image_draw = None
                 settings.FIELD = [None] * 9
                 self.board.field = settings.FIELD
@@ -77,7 +90,6 @@ class TicTacToe:
                     pause = self.board.draw_score(self.game_mode)
                     if pause == 5:
                         self.game_state = menu.GameState.Pause
-                        self.game_mode = 0
                         continue
                     else:
                         self.board.draw_lyrics(self.move)

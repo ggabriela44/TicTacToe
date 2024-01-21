@@ -4,7 +4,6 @@ import settings
 from settings import *
 import menu
 
-
 class Board:
     def __init__(self, screen, game_state):
         self.image_draw = None

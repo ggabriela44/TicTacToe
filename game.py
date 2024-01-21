@@ -6,7 +6,6 @@ import board
 import time
 import menu
 
-
 class TicTacToe:
     def __init__(self):
         pygame.init()

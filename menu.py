@@ -38,6 +38,7 @@ class Move(Enum):
 def set_revenge_state():
     return GameState.Rematch
 
+
 def set_pause_state():
     return GameState.Pause
 
@@ -78,7 +79,7 @@ def draw_title(screen, text):
     font = pygame.font.SysFont(settings.FONT, 50)
     text = font.render(text, True, (180, 180, 180))
     position = text.get_rect()
-    position.center = (settings.WIDTH / 2, settings.MARGIN_HEIGHT )
+    position.center = (settings.WIDTH / 2, settings.MARGIN_HEIGHT)
     screen.blit(text, position)
 
 
@@ -90,8 +91,8 @@ def add_btn():
 
     exit_button = Button(width_center - width_btn / 2, height_center, width_btn, height_btn, pygame, "WYJŚCIE",
                          set_exit_state)
-    rematch_button = Button(settings.WIDTH-width_btn / 2+20, settings.HEIGHT-settings.MARGIN_HEIGHT+5, 200, 75, pygame, "REWANŻ",
-                          set_revenge_state, 1, 40)
+    rematch_button = Button(settings.WIDTH-width_btn / 2+20, settings.HEIGHT-settings.MARGIN_HEIGHT+5,
+                            200, 75, pygame, "REWANŻ", set_revenge_state, 1, 40)
 
     main_menu_buttons.append(exit_button)
     pause_menu_buttons.append(rematch_button)
@@ -100,8 +101,8 @@ def add_btn():
                          set_player_menu_state)
     main_menu_buttons.append(play_button)
 
-    back_button = Button(width_center - width_btn / 2 + 50, settings.HEIGHT-settings.MARGIN_HEIGHT+5, 200, 75, pygame, "MENU",
-                         set_reset_state, 1, 40)
+    back_button = Button(width_center - width_btn / 2 + 50, settings.HEIGHT-settings.MARGIN_HEIGHT+5,
+                         200, 75, pygame, "MENU", set_reset_state, 1, 40)
     pause_menu_buttons.append(back_button)
 
     pvp_mode_button = Button(width_center - width_btn / 2, height_center - 150, width_btn, height_btn, pygame, "P1vsP2",
@@ -114,5 +115,3 @@ def add_btn():
     game_mode_buttons.append(pvp_mode_button)
     game_mode_buttons.append(normal_mode_button)
     game_mode_buttons.append(extreme_mode_button)
-
-

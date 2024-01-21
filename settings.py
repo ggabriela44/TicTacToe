@@ -10,7 +10,7 @@ MARGIN_HEIGHT = 100
 
 # cells size
 CELL_WIDTH = (WIDTH - MARGIN_WIDTH*2) // 3
-CELL_HEIGHT = (HEIGHT - MARGIN_HEIGHT *2) // 3
+CELL_HEIGHT = (HEIGHT - MARGIN_HEIGHT*2) // 3
 
 # list of position X and O
 FIELD = [None] * 9
@@ -21,7 +21,7 @@ FONT_COLOR = (180, 180, 180)  # default
 FONT_SIZE = 40
 
 # colors
-BLACK = (0,0,0)
+BLACK = (0, 0, 0)
 WHITE = (180, 180, 180)
 
 # time to wait

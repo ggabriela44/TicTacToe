@@ -248,7 +248,7 @@ class Board:
             rect_width = settings.WIDTH
             rect_height = position.height + padding * 2
 
-            rect = pygame.Rect(0 ,  padding , rect_width, rect_height)
+            rect = pygame.Rect(0,  padding, rect_width, rect_height)
             position.center = (WIDTH / 2, MARGIN_HEIGHT / 2)
 
             pygame.draw.rect(self.screen, (51, 102, 0, 150), rect)

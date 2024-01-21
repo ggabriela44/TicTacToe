@@ -1,4 +1,5 @@
-import pygame, sys
+import pygame
+import sys
 import pygame.locals
 import settings
 import board
@@ -43,7 +44,7 @@ class TicTacToe:
                 self.board.field = settings.FIELD
                 continue
 
-            #REVENGE GAME
+            # REVENGE GAME
             if self.game_state == menu.GameState.Rematch:
                 self.clock = pygame.time.Clock()
                 self.running = True
@@ -64,7 +65,7 @@ class TicTacToe:
                 # POCZĄTKOWE MENU
                 if self.game_state == menu.GameState.MainMenu:
                     self.board.draw_board()
-                    menu.draw_title(self.screen,"Kółko i Krzyżyk")
+                    menu.draw_title(self.screen, "Kółko i Krzyżyk")
                     for buttons in menu.main_menu_buttons:
                         state = buttons.process(self.screen)
                         if state is not None:
@@ -74,7 +75,7 @@ class TicTacToe:
                 # MENU TRYB GRY
                 elif self.game_state == menu.GameState.PlayerMenu:
                     self.board.draw_board()
-                    menu.draw_title(self.screen,"Tryb rozgrywki:")
+                    menu.draw_title(self.screen, "Tryb rozgrywki:")
                     for button in menu.game_mode_buttons:
                         mode_btn = button.process(self.screen)
                         if mode_btn is not None:
